@@ -14,6 +14,10 @@ class BasePage:
         with allure.step('Открыть главную страницу сайта'):
             self.driver.get(Config.URL)
 
+    def wait_for_element_to_disappear(self, locator):
+        with allure.step('Дождаться исчезновения элемента'):
+            WebDriverWait(self.driver, 15).until(EC.invisibility_of_element_located(locator))
+
     def find_element(self, locator):
         with allure.step(f'Найти элемент {locator}'):
             by, value = locator # распаковка кортежа
@@ -88,3 +92,19 @@ class BasePage:
     def wait_for_elements(self, locator):
         with allure.step('Найти элементы'):
             return WebDriverWait(self.driver, 15).until(EC.visibility_of_all_elements_located(locator))
+
+    def wait_of_element_presence(self, locator):
+        with allure.step('Дождаться появления элемента'):
+            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(locator))
+
+    def wait_for_result_of_condition(self, condition_function):
+        with allure.step('Дождаться выполнения результат условия'):
+            WebDriverWait(self.driver, 15).until(condition_function)
+
+    def wait_for_element_to_be_clickable(self, locator):
+        with allure.step('Дождаться, пока элемент не станет кликабельным'):
+            WebDriverWait(self.driver, 15).until(EC.element_to_be_clickable(locator))
+
+    def wait_for_url_contains(self, text):
+        with allure.step(f'Дождаться, пока URL будет содержать "{text}"'):
+            WebDriverWait(self.driver, 15).until(EC.url_contains(text))

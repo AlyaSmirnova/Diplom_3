@@ -1,8 +1,6 @@
 from pages.base_page import BasePage
 from src.locators import ResetPasswordPageLocators
 from src.data import TestData
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import allure
 
 
@@ -30,11 +28,11 @@ class ResetPasswordPage(BasePage):
     def click_to_new_reset_password_button(self):
         with allure.step('Кликнуть на кнопку "Восстановить"'):
             self.click_to_element(ResetPasswordPageLocators.NEW_RESET_PASSWORD_BUTTON)
-            WebDriverWait(self.driver, 15).until(EC.url_contains("/reset-password"))
+            self.wait_for_url_contains("/reset-password")
 
     def click_to_eye_icon(self):
         with allure.step('Кликнуть на иконку глаза в поле Пароль'):
-            WebDriverWait(self.driver, 15).until(EC.element_to_be_clickable(ResetPasswordPageLocators.EYE_ICON))
+            self.wait_for_element_to_be_clickable(ResetPasswordPageLocators.EYE_ICON)
             self.click_to_element(ResetPasswordPageLocators.EYE_ICON)
 
     def is_password_field_highlighted(self):

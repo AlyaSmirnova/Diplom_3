@@ -1,8 +1,5 @@
 from pages.base_page import BasePage
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from src.locators import OrdersQueueLocators
-from src.locators import MainPageLocators
 import allure
 
 
@@ -17,11 +14,11 @@ class OrdersQueuePage(BasePage):
 
     def take_first_order_in_orders_queue(self):
         with allure.step('Взять первый заказ из ленты заказов'):
-            self.driver.find_element(*OrdersQueueLocators.FIRST_ORDER_ITEM).click()
+            self.find_element(*OrdersQueueLocators.FIRST_ORDER_ITEM).click()
 
     def find_modal_order_window(self):
         with allure.step('Дождаться открытия всплывающего окна с информацией о заказе'):
-            return self.driver.find_element(*OrdersQueueLocators.MODAL_FIRST_ORDER_WINDOW)
+            return self.find_element(*OrdersQueueLocators.MODAL_FIRST_ORDER_WINDOW)
 
     def get_all_orders_numbers(self):
         with allure.step('Получить номера всех заказов в Ленте заказов'):
@@ -34,8 +31,7 @@ class OrdersQueuePage(BasePage):
 
     def click_to_personal_account_button(self):
         with allure.step('Кликнуть на копку "Личный кабинет"'):
-            WebDriverWait(self.driver, 15).until(
-                EC.invisibility_of_element_located(OrdersQueueLocators.PERSONAL_ACCOUNT_BUTTON))
+            self.wait_for_element_to_disappear(OrdersQueueLocators.PERSONAL_ACCOUNT_BUTTON)
             self.click_to_element(OrdersQueueLocators.PERSONAL_ACCOUNT_BUTTON)
 
     def get_today_orders(self):

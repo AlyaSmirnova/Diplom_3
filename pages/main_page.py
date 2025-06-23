@@ -1,7 +1,5 @@
 from pages.base_page import BasePage
 from src.locators import MainPageLocators
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import allure
 
 
@@ -48,12 +46,12 @@ class MainPage(BasePage):
 
     def disappear_of_ingredient_bun_header(self):
         with allure.step('Дождаться исчезновения заголовка "Детали ингредиента"'):
-            WebDriverWait(self.driver, 15).until(EC.invisibility_of_element_located(MainPageLocators.INGREDIENT_BUN_HEADER))
+            self.wait_for_element_to_disappear(MainPageLocators.INGREDIENT_BUN_HEADER)
             return True
 
     def drag_ingredient(self, browser_name):
         with allure.step('Использовать подходящий для браузера метод drag_and_drop'):
-            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(MainPageLocators.INGREDIENT_BUN_BUTTON))
+            self.wait_of_element_presence(MainPageLocators.INGREDIENT_BUN_BUTTON)
             if browser_name == "chrome":
                 self.drag_and_drop_chrome(MainPageLocators.INGREDIENT_BUN_BUTTON, MainPageLocators.ORDER_AREA)
             else:
@@ -66,24 +64,24 @@ class MainPage(BasePage):
 
     def wait_for_counter_increase(self):
         with allure.step('Дождаться увеличения счетчика'):
-            WebDriverWait(self.driver, 15).until(lambda driver: self.get_ingredient_counter() > 0)
+            self.wait_for_result_of_condition(lambda driver: self.get_ingredient_counter() > 0)
 
     def click_to_create_order_button(self):
         with allure.step('Кликнуть на кнопку "Оформить заказ"'):
             self.wait_for_element(MainPageLocators.CREATE_ORDER_BUTTON)
-            WebDriverWait(self.driver, 15).until(EC.element_to_be_clickable(MainPageLocators.CREATE_ORDER_BUTTON)).click()
+            self.wait_for_element_to_be_clickable(MainPageLocators.CREATE_ORDER_BUTTON).click()
 
     def wait_for_id_order_header_appears(self):
         with allure.step('Дождаться появления заголовка "идентификатор заказа"'):
-            WebDriverWait(self.driver, 15).until(EC.visibility_of_element_located(MainPageLocators.ID_ORDER_HEADER))
+            self.wait_for_element(MainPageLocators.ID_ORDER_HEADER)
             return True
 
     def find_order_number_element(self):
         with allure.step('Найти номер заказа пользователя'):
-            return self.driver.find_element(*MainPageLocators.ID_ORDER_HEADER)
+            return self.find_element(*MainPageLocators.ID_ORDER_HEADER)
 
     def click_to_cross_icon_for_close_order(self):
         with allure.step('Кликнуть на иконку закрытия окна оформления заказа'):
-            WebDriverWait(self.driver, 15).until(EC.visibility_of_element_located(MainPageLocators.CROSS_ICON_BUTTON))
+            self.wait_for_element(MainPageLocators.CROSS_ICON_BUTTON)
             self.click_to_element(MainPageLocators.CROSS_ICON_BUTTON)
 
