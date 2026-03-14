@@ -27,11 +27,10 @@ jobs:
 
       - name: Install Allure
         run: |
-          wget https://github.com
+          wget https://github.com/allure-framework/allure2/releases/download/2.24.0/allure-2.24.0.tgz
           tar -zxvf allure-2.24.0.tgz -C /tmp/
           sudo mv /tmp/allure-2.24.0 /opt/allure
           sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-      
 
       - name: Run Pytest (Chrome & Firefox)
         run: pytest
