@@ -1,4 +1,4 @@
 class Config:
-    URL = 'https://stellarburgers.nomoreparties.site/'
+    URL = 'https://stellarburgers.education-services.ru'
 
-    browser_name = None # глобальная переменная, работает при запуске фикстуры
+    browser_name = None

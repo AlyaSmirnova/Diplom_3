@@ -8,18 +8,18 @@ class LoginPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
+    @allure.step('Wait for email input field to be visible')
     def wait_for_email_field(self):
-        with allure.step('Дождаться появления поля ввода для email'):
-            self.wait_for_element(LoginPageLocators.EMAIL)
+        self.wait_for_element(LoginPageLocators.EMAIL)
 
+    @allure.step('Input test email into the Email field')
     def input_text_to_email_field(self):
-        with allure.step('Ввести email в поле "Email"'):
-            self.input_text(LoginPageLocators.EMAIL, TestData.test_email)
+        self.input_text(LoginPageLocators.EMAIL, TestData.test_email)
 
+    @allure.step('Input test password into the Password field')
     def input_text_to_password_field(self):
-        with allure.step('Ввести пароль в поле "Пароль"'):
-            self.input_text(LoginPageLocators.PASSWORD, TestData.test_password)
+        self.input_text(LoginPageLocators.PASSWORD, TestData.test_password)
 
+    @allure.step('Click on the Login button')
     def click_to_button_login(self):
-        with allure.step('Кликнуть на кнопку "Войти"'):
-            self.click_to_element(LoginPageLocators.LOGIN_BUTTON)
+        self.click_with_js(LoginPageLocators.LOGIN_BUTTON)

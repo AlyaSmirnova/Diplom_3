@@ -9,31 +9,30 @@ class PersonalAccountPage(BasePage):
     def __init__(self, driver):
         super().__init__(driver)
 
+    @allure.step('Wait for "Order History" button to appear')
     def wait_for_orders_history_button(self):
-        with allure.step('Дождаться появления кнопки "История заказов"'):
-            self.wait_for_url_contains("/account/profile")
-            self.wait_for_element(PersonalAccountPageLocators.ORDERS_HISTORY_BUTTON)
+        return self.wait_for_element(PersonalAccountPageLocators.ORDERS_HISTORY_BUTTON)
 
+    @allure.step('Click on the "Order History" button')
     def click_to_orders_history_button(self):
-        with allure.step('Клинкуть на кнопку "История заказов"'):
-            self.click_to_element(PersonalAccountPageLocators.ORDERS_HISTORY_BUTTON)
+        self.click_with_js(PersonalAccountPageLocators.ORDERS_HISTORY_BUTTON)
 
+    @allure.step('Wait for "Personal Account" button to become clickable after authorization')
     def wait_for_personal_account_button_is_clickable(self):
-        with allure.step('Дождаться кликабельности кнопки "личный кабинет" после авторизации'):
-            self.wait_for_element_to_be_clickable(MainPageLocators.PERSONAL_ACCOUNT_BUTTON)
+        return self.wait_for_element_to_be_clickable(MainPageLocators.PERSONAL_ACCOUNT_BUTTON)
 
+    @allure.step('Click on the "Personal Account" button')
     def click_to_personal_account_button(self):
-        with allure.step('Кликнуть на кнопку "Личный кабинет"'):
-            self.click_to_element(MainPageLocators.PERSONAL_ACCOUNT_BUTTON)
+        self.click_to_element(MainPageLocators.PERSONAL_ACCOUNT_BUTTON)
 
+    @allure.step('Wait for "Logout" button to appear')
     def wait_for_logout_button(self):
-        with allure.step('Дождаться появления кнопки "Выход"'):
-            self.wait_for_element(PersonalAccountPageLocators.LOGOUT_BUTTON)
+        return self.wait_for_element(PersonalAccountPageLocators.LOGOUT_BUTTON)
 
+    @allure.step('Click on the "Logout" button')
     def click_to_logout_button(self):
-        with allure.step('Кликнуть по кнопке "Выход"'):
-            self.click_to_element(PersonalAccountPageLocators.LOGOUT_BUTTON)
+        self.click_to_element(PersonalAccountPageLocators.LOGOUT_BUTTON)
 
+    @allure.step('Wait for URL to change (Logout process)')
     def wait_for_change_url(self):
-        with allure.step('Дождаться изменения URL'):
-            self.wait_for_url_contains("/login")
+        return self.wait_for_url_contains("/login")

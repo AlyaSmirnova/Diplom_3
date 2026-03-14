@@ -5,10 +5,12 @@ from pages.login_page import LoginPage
 import allure
 
 
-@allure.suite('Проверка Ленты заказов')
+@allure.feature('Order Feed Functionality')
 class TestOrderQueuePage:
 
-    @allure.title('Проверка появления всплывающего окна при клике на заказ в Ленте заказов')
+    @allure.story('Order Details Modal')
+    @allure.title('Check order details modal opens in Order Feed')
+    @allure.description('Verify that clicking on an order card opens a modal window with details.')
     def test_click_to_order_modal_window_appears(self, driver):
         main_page = MainPage(driver)
         main_page.open_page()
@@ -20,7 +22,9 @@ class TestOrderQueuePage:
         orders_queue_page.take_first_order_in_orders_queue()
         assert orders_queue_page.find_modal_order_window()
 
-    @allure.title('Проверка, что заказы из "Истории заказов" отображаются в "Ленте заказов"')
+    @allure.story('Order Synchronization')
+    @allure.title('Check that user orders appear in Order Feed')
+    @allure.description('Verify that a newly created order ID is visible in the general Order Feed list.')
     def test_orders_from_history_are_in_orders_queue(self, driver):
         main_page = MainPage(driver)
         main_page.open_page()
@@ -38,18 +42,19 @@ class TestOrderQueuePage:
         main_page.wait_for_counter_increase()
         main_page.click_to_create_order_button()
         main_page.wait_for_id_order_header_appears()
-        order_number_element = main_page.find_order_number_element()
+        order_number_element = main_page.wait_for_id_order_header_appears()
         order_number = order_number_element.text
-        main_page.wait_for_modal_overlay_invisibility()
         main_page.click_to_cross_icon_for_close_order()
+        main_page.wait_for_modal_overlay_invisibility()
         main_page.click_to_orders_queue_button()
 
         orders_queue_page = OrdersQueuePage(driver)
         orders_queue_page.wait_for_orders_queue_header_appears()
-        orders_queue_numbers = orders_queue_page.get_all_orders_numbers()
-        assert order_number in orders_queue_numbers
+        orders_queue_page.get_all_orders_numbers()
+        assert orders_queue_page.wait_for_order_in_feed(order_number)
 
-    @allure.title('Проверка, что при создании нового заказа счетчик Выполнено за все время увеличивается')
+    @allure.story('Order Statistics')
+    @allure.title('Total orders counter increases after new order')
     def test_total_done_count_increases(self, driver):
         main_page = MainPage(driver)
         main_page.open_page()
@@ -75,7 +80,8 @@ class TestOrderQueuePage:
         total_after = orders_queue_page.get_total_orders()
         assert total_after > total_before
 
-    @allure.title('Проверка, что при создании заказа счетчик Выполнено за сегодня увеличивается')
+    @allure.story('Order Statistics')
+    @allure.title('Today orders counter increases after new order')
     def test_today_orders_increases(self, driver):
         main_page = MainPage(driver)
         main_page.open_page()
@@ -98,10 +104,13 @@ class TestOrderQueuePage:
         main_page.wait_for_id_order_header_appears()
         main_page.click_to_orders_queue_button()
 
+        orders_queue_page.wait_for_today_counter_to_increase(today_before)
         today_after = orders_queue_page.get_today_orders()
         assert today_after > today_before
 
-    @allure.title('Проверка, что после оформления заказа его номер появляется в разделе "В работе"')
+    @allure.story('Order Status')
+    @allure.title('Order number appears in "In Progress" section')
+    @allure.description('Verify that after placing an order, its ID is displayed in the "Work" section of the feed.')
     def test_order_number_appears_in_work_section(self, driver):
         main_page = MainPage(driver)
         main_page.open_page()
@@ -120,6 +129,10 @@ class TestOrderQueuePage:
         main_page.click_to_create_order_button()
         order_number_element = main_page.wait_for_id_order_header_appears()
         order_number = order_number_element.text
+
+        main_page.click_to_cross_icon_for_close_order()
+        main_page.wait_for_modal_overlay_invisibility()
+        main_page.click_to_orders_queue_button()
 
         orders_queue_page = OrdersQueuePage(driver)
         orders_queue_page.wait_for_orders_queue_header_appears()

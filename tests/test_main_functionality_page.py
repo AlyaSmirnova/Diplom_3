@@ -4,10 +4,12 @@ from pages.login_page import LoginPage
 import allure
 
 
-@allure.suite('Проверка основного функционала сайта')
+@allure.feature('Main Page Functionality')
 class TestMainFunctionalityPage:
 
-    @allure.title('Проверка перехода на страницу конструктора при клике на кнопку "Конструктор"')
+    @allure.story('Navigation')
+    @allure.title('Check transition to Constructor page')
+    @allure.description('Verify that clicking the "Constructor" button highlights the section and navigates correctly.')
     def test_click_to_constructor_button(self, driver):
         main_page = MainPage(driver)
         main_page.open_page()
@@ -15,7 +17,8 @@ class TestMainFunctionalityPage:
         main_page.click_to_constructor_button()
         assert main_page.is_constructor_button_highlighted()
 
-    @allure.title('Проверка перехода на страницу Ленты заказов при клике на кнопку "Лента Заказов"')
+    @allure.story('Navigation')
+    @allure.title('Check transition to Order Feed page')
     def test_click_to_queue_button(self, driver):
         main_page = MainPage(driver)
         main_page.open_page()
@@ -23,7 +26,9 @@ class TestMainFunctionalityPage:
         main_page.click_to_orders_queue_button()
         assert "/feed" in main_page.get_current_url()
 
-    @allure.title('Проверка открытия всплывающего окна с детальной информацией при клике на ингредиент')
+    @allure.story('Ingredients Modal')
+    @allure.title('Open ingredient details modal window')
+    @allure.description('Verify that clicking on an ingredient opens a modal with correct detailed information.')
     def test_click_to_ingredient_open_modal_window_with_info(self, driver):
         main_page = MainPage(driver)
         main_page.open_page()
@@ -32,7 +37,8 @@ class TestMainFunctionalityPage:
         main_page.wait_for_visibility_open_modal_window()
         assert '/ingredient/61c0c5a71d1f82001bdaaa6d' in main_page.get_current_url()
 
-    @allure.title('Проверка закрытия всплывающего окна ингредиента по клику на иконку крестика')
+    @allure.story('Ingredients Modal')
+    @allure.title('Close ingredient modal by clicking cross icon')
     def test_click_on_cross_icon_close_modal_window(self, driver):
         main_page = MainPage(driver)
         main_page.open_page()
@@ -42,7 +48,9 @@ class TestMainFunctionalityPage:
         main_page.click_on_cross_icon_for_close_modal_window()
         assert main_page.disappear_of_ingredient_bun_header()
 
-    @allure.title('Проверка увеличения счетчика ингредиента при добавлении ингредиента в заказ')
+    @allure.story('Order Process')
+    @allure.title('Ingredient counter increases when added to order')
+    @allure.description('Verify that dragging an ingredient to the cart increases its counter value.')
     def test_counter_ingredient_increases_when_added_ingredient(self, driver):
         browser_name = Config.browser_name
         main_page = MainPage(driver)
@@ -54,7 +62,9 @@ class TestMainFunctionalityPage:
         final_counter = main_page.get_ingredient_counter()
         assert final_counter == initial_counter + 2
 
-    @allure.title('Проверка, что авторизованный пользователь может оформить заказ')
+    @allure.story('Order Process')
+    @allure.severity(allure.severity_level.CRITICAL)
+    @allure.title('Authorized user can successfully create an order')
     def test_authorized_user_can_create_order(self, driver):
         browser_name = Config.browser_name
         main_page = MainPage(driver)

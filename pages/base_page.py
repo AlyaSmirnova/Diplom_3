@@ -11,46 +11,46 @@ class BasePage:
         self.driver = driver
 
     def open_page(self):
-        with allure.step('Открыть главную страницу сайта'):
+        with allure.step(f'Open main page: {Config.URL}'):
             self.driver.get(Config.URL)
 
     def wait_for_element_to_disappear(self, locator):
-        with allure.step('Дождаться исчезновения элемента'):
+        with allure.step(f'Wait for element {locator} to disappear'):
             WebDriverWait(self.driver, 15).until(EC.invisibility_of_element_located(locator))
 
     def find_element(self, locator):
-        with allure.step(f'Найти элемент {locator}'):
-            by, value = locator # распаковка кортежа
+        with allure.step(f'Find element by locator: {locator}'):
+            by, value = locator
             return self.driver.find_element(by, value)
 
     def wait_for_element(self, locator, timeout=10):
-        with allure.step(f'Дождаться появления элемента {locator}'):
+        with allure.step(f'Wait for element {locator} to be visible'):
             return WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
 
     def click_to_element(self, locator):
-        with allure.step(f'Кликнуть на элемент {locator}'):
+        with allure.step(f'Click on element: {locator}'):
             self.wait_for_element(locator).click()
 
     def get_current_url(self):
-        with allure.step("Получить текущий адрес сайта"):
+        with allure.step("Get current browser URL"):
             return self.driver.current_url
 
     def input_text(self, locator, keys):
-        with allure.step(f'Ввести текст{keys} в поле {locator}'):
+        with allure.step(f'Input text into {locator}'):
             self.wait_for_element(locator).send_keys(keys)
 
     def wait_for_modal_overlay_disappear(self, locator):
-        with allure.step('Дождаться, когда исчезнет перекрывающее модальное окно'):
+        with allure.step('Wait for modal overlay/popup to disappear'):
             WebDriverWait(self.driver, 15).until(EC.invisibility_of_element_located(locator))
 
-    def drag_and_drop_chrome(self, locator_from, locator_to): # метод действует только для Chrome
-        with allure.step('Перетащить ингредиент в заказ для браузера Chrome'):
+    def drag_and_drop_chrome(self, locator_from, locator_to): # only for Chrome
+        with allure.step('Perform Drag-and-Drop for Chrome browser'):
             elem_from = self.find_element(locator_from)
             elem_to = self.find_element(locator_to)
             ActionChains(self.driver).drag_and_drop(elem_from, elem_to).perform()
 
     def drag_and_drop_firefox(self, locator_from, locator_to):
-        with allure.step('Перетащить ингредиент в заказ для браузера Firefox'):
+        with allure.step('Perform Drag-and-Drop for Firefox browser via JS script'):
             elem_from = self.find_element(locator_from)
             elem_to = self.find_element(locator_to)
             self.driver.execute_script("""
@@ -90,21 +90,26 @@ class BasePage:
                     """, elem_from, elem_to)
 
     def wait_for_elements(self, locator):
-        with allure.step('Найти элементы'):
+        with allure.step(f'Wait for all elements located by {locator}'):
             return WebDriverWait(self.driver, 15).until(EC.visibility_of_all_elements_located(locator))
 
     def wait_of_element_presence(self, locator):
-        with allure.step('Дождаться появления элемента'):
+        with allure.step(f'Wait for presence of element {locator} in DOM'):
             WebDriverWait(self.driver, 10).until(EC.presence_of_element_located(locator))
 
     def wait_for_result_of_condition(self, condition_function):
-        with allure.step('Дождаться выполнения результат условия'):
+        with allure.step('Wait for custom expected condition result'):
             WebDriverWait(self.driver, 15).until(condition_function)
 
     def wait_for_element_to_be_clickable(self, locator):
-        with allure.step('Дождаться, пока элемент не станет кликабельным'):
-            WebDriverWait(self.driver, 15).until(EC.element_to_be_clickable(locator))
+        with allure.step(f'Wait for element {locator} to become clickable'):
+            return WebDriverWait(self.driver, 15).until(EC.element_to_be_clickable(locator))
 
     def wait_for_url_contains(self, text):
-        with allure.step(f'Дождаться, пока URL будет содержать "{text}"'):
+        with allure.step(f'Wait for browser URL to contain: "{text}"'):
             WebDriverWait(self.driver, 15).until(EC.url_contains(text))
+
+    @allure.step('Force click on element using JavaScript: {locator}')
+    def click_with_js(self, locator):
+        element = self.wait_for_element(locator)
+        self.driver.execute_script("arguments[0].click();", element)
