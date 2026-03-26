@@ -18,10 +18,10 @@
 
 ## 💫 Description
 This is the final part of the graduation project: a **UI Automation Framework** for the **Stellar Burgers** web service. 
-The suite validates critical user journeys using **Selenium WebDriver** and the **Page Object Model (POM)** pattern. The framework is designed for cross-browser stability, covering both **Chrome** and **Firefox**.
+The suite validates critical user paths using **Selenium WebDriver** and the **Page Object Model (POM)** pattern. The framework is designed for cross-browser stability, covering both **Chrome** and **Firefox**.
 
 ## 🧑‍💻 Tech Stack & Tools
-- **Language:** Python 3.13+
+- **Language:** Python 3.11+
 - **Testing Framework:** [Pytest](https://docs.pytest.org/)
 - **Browser Automation:** [Selenium WebDriver](https://www.selenium.dev)
 - **Design Pattern:** Page Object Model (POM)
@@ -78,13 +78,12 @@ The project is integrated with the **Allure Framework** to provide high-level vi
 *   **Behavior-Driven Hierarchy:** Tests are logically structured using `@allure.feature` (e.g., *Main Page*, *Order Feed*) and `@allure.story` (e.g., *Ingredients Modal*, *Real-time Sync*), providing a clear business-level overview.
 *   **Granular Step Execution:** Detailed `@allure.step` tracking for every action within Page Objects. This allows for pinpointing exactly where a failure occurred (e.g., "Wait for element to be clickable" vs. "Perform Drag-and-Drop").
 *   **Dynamic Data Visualization:** Clear representation of test execution flow, including dynamic variables like generated Order IDs and real-time counter values.
-*   **Automated Screenshot Capture:** (Optional/Implemented) Instant access to visual evidence of the application state at the moment of failure, significantly reducing debugging time.
 *   **Success & Failure Root-Cause Analysis:** Comprehensive logging of Selenium `TimeoutException` or `AssertionError`, with clean stack traces translated into readable test steps.
 *   **Environment Metadata:** The report includes details about the environment, such as the browser used (**Chrome** vs. **Firefox**) and the Base URL, ensuring context for every test run.
 
 ## 🧪 Test Coverage
 
-The automation suite provides 100% coverage for the critical user journeys of the **Stellar Burgers** web application, ensuring stability across major functional modules:
+The automation suite provides 100% coverage for the critical user paths of the **Stellar Burgers** web service, ensuring stability across major functional modules:
 
 ### 1. Main Page & Burger Constructor
 *   **Navigation Logic:** Validating seamless transitions between the "Constructor" and "Order Feed" sections.
@@ -123,7 +122,7 @@ Clone the repository and set up a local virtual environment to ensure dependency
 > ```bash 
 > git clone https://github.com/AlyaSmirnova/Diplom_3
 > cd Diplom_3
-📦 Repository: [Sprint_5](https://github.com/AlyaSmirnova/Diplom_3)
+📦 Repository: [Diplom_3](https://github.com/AlyaSmirnova/Diplom_3)
 
 2. **Create a virtual environment**
 > ```bash 
@@ -148,7 +147,7 @@ After the test execution is complete, the `allure-results` folder will be genera
 
 ## ⚙️ CI/CD Workflow
 The project is fully integrated with **GitHub Actions**. The pipeline automatically:
-1.  Sets up a **Python 3.13** environment on an Ubuntu runner.
+1.  Sets up a **Python 3.11** environment on an Ubuntu runner.
 2.  Installs **Chrome** and **Firefox** webdrivers.
 3.  Executes the full UI suite in **headless mode**.
 4.  Deploys the final **Allure Report** to **GitHub Pages** for easy viewing of test results.
